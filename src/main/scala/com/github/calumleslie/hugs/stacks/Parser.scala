@@ -43,7 +43,7 @@ class Parser {
     lazy val boolean: PackratParser[Bool] = """[tf]""".r ^^ { case s => Bool.fromStr(s) }
 
     // To "simplify parsing", words are 2+ characters
-    lazy val word: PackratParser[Word] = """[a-zA-Z][a-zA-Z0-9\-]+""".r ^^ { case name => Word(name) }
+    lazy val word: PackratParser[Word] = """([^\stf"])|([^\s"]{2,})""".r ^^ { case name => Word(name) }
 
     lazy val quotation: PackratParser[Quotation] = "[" ~> sentence <~ "]" ^^ { case content => Quotation(immutable.Seq(content: _*)) }
 
