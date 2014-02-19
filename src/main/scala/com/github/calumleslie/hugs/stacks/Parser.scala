@@ -27,7 +27,7 @@ class Parser {
     lazy val sentence: PackratParser[Seq[Particle]] = repsep(particle, whiteSpace)
 
     // Use of "word" here is a bit gnarly
-    lazy val particle: PackratParser[Particle] = floatNum | fixNum | str | word | boolean | quotation | failure("Did not recognise particle")
+    lazy val particle: PackratParser[Particle] = floatNum | fixNum | str | boolean | word | quotation | failure("Did not recognise particle")
 
     lazy val fixNum: PackratParser[FixNum] = """[1-9][0-9]*""".r ^^ {
       case numStr => FixNum(numStr.toInt)
@@ -39,11 +39,9 @@ class Parser {
 
     lazy val str: PackratParser[Str] = stringLiteral ^^ { case s => Str(s.substring(1, s.length() - 1)) } // TODO: Apply escapes :'(
 
-    // Don't ask why I'm doing this with a regex
-    lazy val boolean: PackratParser[Bool] = """[tf]""".r ^^ { case s => Bool.fromStr(s) }
+    lazy val boolean: PackratParser[Bool] = """[tf]\b""".r ^^ { case s => Bool.fromStr(s) }
 
-    // To "simplify parsing", words are 2+ characters
-    lazy val word: PackratParser[Word] = """([^\s"]{2,})""".r ^^ { case name => Word(name) }
+    lazy val word: PackratParser[Word] = """([^\s"]+)""".r ^^ { case name => Word(name) }
 
     lazy val quotation: PackratParser[Quotation] = "[" ~> sentence <~ "]" ^^ { case content => Quotation(immutable.Seq(content: _*)) }
 

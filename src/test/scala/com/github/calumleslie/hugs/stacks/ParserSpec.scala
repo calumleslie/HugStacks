@@ -31,7 +31,7 @@ class ParserSpec extends FunSpec with ShouldMatchers {
     }
 
     it("should parse words") {
-      parser.parse("true foo bar") shouldBe (Seq(Word("true"), Word("foo"), Word("bar")))
+      parser.parse("true foo bar a + - %") shouldBe (Seq(Word("true"), Word("foo"), Word("bar"), Word("a"), Word("+"), Word("-"), Word("%")))
     }
 
     it("should parse fixnums") {
