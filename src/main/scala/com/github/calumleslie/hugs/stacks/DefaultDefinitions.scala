@@ -4,7 +4,7 @@ import com.github.calumleslie.hugs.stacks.lang.FixNum
 import com.github.calumleslie.hugs.stacks.lang.FixNum
 
 object DefaultDefinitions {
-  val noop = Definition(identity[State])
+  val noop = Definition({ state: State => state })
   val dup = Definition({ state: State =>
     state.stack match {
       case Nil => state
@@ -13,8 +13,12 @@ object DefaultDefinitions {
   })
   val add = Definition({ state: State =>
     state.stack match {
-      case FixNum(x) :: FixNum(y) :: rest => state.withStack(FixNum(x + y) :: rest)
-      case _ => throw new IllegalArgumentException("Can't apply add to stack ${state.stack}")
+      case (x: Long) :: (y: Long) :: rest => state.withStack((x + y) :: rest)
+      case (x: Double) :: (y: Double) :: rest => state.withStack((x + y) :: rest)
+      case (x: Long) :: (y: Double) :: rest => state.withStack((x + y) :: rest)
+      case (x: Double) :: (y: Long) :: rest => state.withStack((x + y) :: rest)
+      case (x: Long) :: rest => throw new IllegalArgumentException(s"A Can't apply add to stack ${state.stack}")
+      case _ => throw new IllegalArgumentException(s"Can't apply add to stack ${state.stack}")
     }
   })
 }
