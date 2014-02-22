@@ -9,5 +9,6 @@ trait Definition {
 object Definition {
   def apply(transform: State => State) = new Definition {
     def apply(state: State) = transform(state)
+    override def toString() = "(native)"
   }
 }

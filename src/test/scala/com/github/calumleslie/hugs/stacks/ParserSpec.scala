@@ -15,6 +15,7 @@ import com.github.calumleslie.hugs.stacks.lang.Word
 import com.github.calumleslie.hugs.stacks.lang.Bool
 import com.github.calumleslie.hugs.stacks.lang.FixNum
 import com.github.calumleslie.hugs.stacks.lang.FixNum
+import com.github.calumleslie.hugs.stacks.lang.Quotation
 
 @RunWith(classOf[JUnitRunner])
 class ParserSpec extends FunSpec with ShouldMatchers {
@@ -35,11 +36,15 @@ class ParserSpec extends FunSpec with ShouldMatchers {
     }
 
     it("should parse fixnums") {
-      parser.parse("123456 654321") shouldBe (Seq(FixNum(123456), FixNum(654321)))
+      parser.parse("123456 654321 0") shouldBe (Seq(FixNum(123456), FixNum(654321), FixNum(0)))
     }
 
     it("should parse various types of floats") {
       parser.parse("0.5 .5 1.5") shouldBe (Seq(FloatNum(0.5), FloatNum(0.5), FloatNum(1.5)))
+    }
+
+    it("should parse quotations") {
+      parser.parse("[ a ]") shouldBe (Seq(Quotation(List(Word("a")))))
     }
 
     it("should parse all types without nesting") {

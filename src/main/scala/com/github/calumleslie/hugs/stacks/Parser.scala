@@ -24,12 +24,12 @@ class Parser {
 
   private object ParserImpl extends JavaTokenParsers with PackratParsers {
 
-    lazy val sentence: PackratParser[Seq[Particle]] = repsep(particle, whiteSpace)
+    lazy val sentence: PackratParser[List[Particle]] = repsep(particle, whiteSpace)
 
     // Use of "word" here is a bit gnarly
-    lazy val particle: PackratParser[Particle] = floatNum | fixNum | str | boolean | word | quotation | failure("Did not recognise particle")
+    lazy val particle: PackratParser[Particle] = quotation | floatNum | fixNum | str | boolean | word | failure("Did not recognise particle")
 
-    lazy val fixNum: PackratParser[FixNum] = """[1-9][0-9]*""".r ^^ {
+    lazy val fixNum: PackratParser[FixNum] = """([1-9][0-9]*)|0""".r ^^ {
       case numStr => FixNum(numStr.toInt)
     }
 
@@ -41,10 +41,14 @@ class Parser {
 
     lazy val boolean: PackratParser[Bool] = """[tf]\b""".r ^^ { case s => Bool.fromStr(s) }
 
-    lazy val word: PackratParser[Word] = """([^\s"]+)""".r ^^ { case name => Word(name) }
+    lazy val word: PackratParser[Word] = """([^\s"\]\[]+)""".r ^^ { case name => Word(name) }
 
-    lazy val quotation: PackratParser[Quotation] = "[" ~> sentence <~ "]" ^^ { case content => Quotation(immutable.Seq(content: _*)) }
+    lazy val quotation: PackratParser[Quotation] = "[" ~> whiteSpace ~> sentence <~ whiteSpace <~ "]" ^^ { case content => Quotation(content) }
 
     override val skipWhitespace = false
   }
+}
+
+object Parser {
+  def parse( str: String ) = new Parser().parse( str )
 }
