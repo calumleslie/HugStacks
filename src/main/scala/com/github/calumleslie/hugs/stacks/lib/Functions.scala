@@ -4,10 +4,11 @@ import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.lang.Quotation
 import com.github.calumleslie.hugs.stacks.PureDefinition
+import scala.collection.immutable.SortedMap
 
 object Functions {
 
-  lazy val dictionary = Map("apply-to-var" -> applyToVar, "apply" -> apply)
+  lazy val dictionary = SortedMap("apply-to-var" -> applyToVar, "apply" -> apply)
 
   val apply = Definition("""
       Consumes a quotation andimmediately executes its contents.

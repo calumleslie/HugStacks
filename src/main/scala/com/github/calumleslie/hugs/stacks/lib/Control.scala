@@ -5,10 +5,11 @@ import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.lang.Quotation
 import com.github.calumleslie.hugs.stacks.lang.Word
 import com.github.calumleslie.hugs.stacks.lang.Quotation
+import scala.collection.immutable.SortedMap
 
 object Control {
 
-  lazy val dictionary = Map("if" -> if_, "loop" -> loop)
+  lazy val dictionary = SortedMap("if" -> if_, "loop" -> loop)
 
   val if_ = Definition("""
       Consumes boolean and two quotations, applies the first quotation if the boolean is t, the second otherwise.

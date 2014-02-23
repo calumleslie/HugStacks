@@ -5,10 +5,11 @@ import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.lang.Quotation
 import java.util.UUID
 import com.github.calumleslie.hugs.stacks.lang.ParticleHelpers._
+import scala.collection.immutable.SortedMap
 
 object Variables {
 
-  lazy val dictionary = Map("let" -> let, "get" -> get, "del" -> del, "with-var" -> withVar)
+  lazy val dictionary = SortedMap("let" -> let, "get" -> get, "del" -> del, "with-var" -> withVar)
 
   val let = Definition("Consumes a value and a string, stores the value in the var named by the string", { state: State =>
     state.stack match {

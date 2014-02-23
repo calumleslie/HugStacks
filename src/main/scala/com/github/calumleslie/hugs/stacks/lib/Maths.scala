@@ -3,11 +3,12 @@ package com.github.calumleslie.hugs.stacks.lib
 import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.PureDefinition
+import scala.collection.immutable.SortedMap
 
 object Maths {
   // Maybe I should be using a macro for some of this!
 
-  lazy val dictionary = Map(
+  lazy val dictionary = SortedMap(
     "+" -> this.+,
     "-" -> this.-,
     "*" -> this.*,

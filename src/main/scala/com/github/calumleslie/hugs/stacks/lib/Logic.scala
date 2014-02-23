@@ -3,10 +3,11 @@ package com.github.calumleslie.hugs.stacks.lib
 import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.PureDefinition
+import scala.collection.immutable.SortedMap
 
 object Logic {
 
-  lazy val dictionary = Map("!" -> this.!, "&" -> this.&, "|" -> this.|, "=" -> this.eq, "!=" -> this.neq)
+  lazy val dictionary = SortedMap("!" -> this.!, "&" -> this.&, "|" -> this.|, "=" -> this.eq, "!=" -> this.neq)
 
   val ! = Definition("Consumes a boolean, pushes its negation.", { state: State =>
     state.stack match {

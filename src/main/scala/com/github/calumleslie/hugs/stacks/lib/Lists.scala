@@ -4,10 +4,11 @@ import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.lang.Quotation
 import com.github.calumleslie.hugs.stacks.PureDefinition
+import scala.collection.immutable.SortedMap
 
 object Lists {
 
-  lazy val dictionary = Map("get-index" -> getIndex, "empty-list" -> emptyList, "append" -> append, "append-to-var" -> appendToVar)
+  lazy val dictionary = SortedMap("get-index" -> getIndex, "empty-list" -> emptyList, "append" -> append, "append-to-var" -> appendToVar)
 
   val getIndex = Definition("""
       Consumes a list and an integer, pushes the i-th value from the list. 

@@ -2,10 +2,11 @@ package com.github.calumleslie.hugs.stacks.lib
 
 import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
+import scala.collection.immutable.SortedMap
 
 object StackManip {
 
-  lazy val dictionary = Map("noop" -> noop, "dup" -> dup, "dup2" -> dup2, "swap" -> swap)
+  lazy val dictionary = SortedMap("noop" -> noop, "dup" -> dup, "dup2" -> dup2, "swap" -> swap)
 
   val noop = Definition("Does nothing", identity[State])
   val dup = Definition("Pushes a copy of the top of the stack, e.g. 1 2 dup -> 1 2 2", { state: State =>

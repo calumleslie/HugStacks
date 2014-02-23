@@ -45,7 +45,7 @@ object Horrible extends App with Logging {
   
   val out = new PrintStream( new FileOutputStream( htmlOut.toFile() ) )
   
-  out.println(State.traceToHtml(trace))
+  out.println(initial.makeManualHtml)
   
   out.close()
   

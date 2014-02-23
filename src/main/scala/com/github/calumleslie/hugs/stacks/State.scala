@@ -10,8 +10,9 @@ import com.github.calumleslie.hugs.stacks.lang.FloatNum
 import com.github.calumleslie.hugs.stacks.lang.Str
 import scala.annotation.tailrec
 import com.typesafe.scalalogging.slf4j.Logging
+import scala.collection.immutable.SortedMap
 
-class State(val stack: List[Any], val callStack: List[List[Particle]], val dictionary: Map[String, Definition], val vars: Map[String, Any]) {
+class State(val stack: List[Any], val callStack: List[List[Particle]], val dictionary: SortedMap[String, Definition], val vars: SortedMap[String, Any]) {
 
   def eval = State.eval(this)
   def trace = State.trace(this)
@@ -46,7 +47,7 @@ class State(val stack: List[Any], val callStack: List[List[Particle]], val dicti
 
   def withCallstack(newCallStack: List[List[Particle]]) = State(stack, newCallStack, dictionary, vars)
 
-  def withDictionary(newDictionary: Map[String, Definition]) = State(stack, callStack, newDictionary, vars)
+  def withDictionary(newDictionary: SortedMap[String, Definition]) = State(stack, callStack, newDictionary, vars)
 
   def withVar(name: String, value: Any) = State(stack, callStack, dictionary, vars + (name -> value))
 
@@ -67,15 +68,25 @@ class State(val stack: List[Any], val callStack: List[List[Particle]], val dicti
   def toShortString() = s"$stackStr <> $traceStr <> $varStr"
 
   def toHtmlRow() = <tr><td>{ stackStr }</td><td>{ traceStr }</td><td>{ varStr }</td></tr>
+
+  def makeManualHtml = <dl>{
+    dictionary.map {
+      case (name, definition) => {
+        <dt>{ name }</dt>
+        <dd>Documentation: { definition.documentation }</dd>
+        <dd>Definition: { definition.toString() }</dd>
+      }
+    }
+  }</dl>
 }
 
 object State extends Logging {
-  def apply(stack: List[Any], callStack: List[List[Particle]], dictionary: Map[String, Definition], vars: Map[String, Any]) = {
+  def apply(stack: List[Any], callStack: List[List[Particle]], dictionary: SortedMap[String, Definition], vars: SortedMap[String, Any]) = {
     new State(stack, callStack.filterNot(_.isEmpty), dictionary, vars)
   }
 
-  def apply(sentence: Seq[Particle], dictionary: Map[String, Definition]): State = {
-    new State(Nil, List(sentence: _*) :: Nil, dictionary, Map.empty)
+  def apply(sentence: Seq[Particle], dictionary: SortedMap[String, Definition]): State = {
+    new State(Nil, List(sentence: _*) :: Nil, dictionary, SortedMap.empty)
   }
 
   @tailrec
