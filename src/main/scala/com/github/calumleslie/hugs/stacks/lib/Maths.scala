@@ -4,9 +4,12 @@ import com.github.calumleslie.hugs.stacks.Definition
 import com.github.calumleslie.hugs.stacks.State
 import com.github.calumleslie.hugs.stacks.PureDefinition
 import scala.collection.immutable.SortedMap
+import scala.util.Random
 
 object Maths {
   // Maybe I should be using a macro for some of this!
+
+  private[this] val random = new Random()
 
   lazy val dictionary = SortedMap(
     "+" -> this.+,
@@ -17,7 +20,8 @@ object Maths {
     ">" -> this.>,
     "<" -> this.<,
     "--" -> this.--,
-    "++" -> this.++)
+    "++" -> this.++,
+    "random-integer" -> this.randomInteger)
 
   val + = Definition("Consumes two numbers, pushes their sum", { state: State =>
     state.stack match {
@@ -75,6 +79,15 @@ object Maths {
       case (y: Double) :: (x: Double) :: rest => state.withStack((x > y) :: rest)
       case (y: Long) :: (x: Double) :: rest => state.withStack((x > y) :: rest)
       case (y: Double) :: (x: Long) :: rest => state.withStack((x > y) :: rest)
+      case _ => throw new IllegalArgumentException(s"Can't apply word to stack ${state.stack}")
+    }
+  })
+
+  val randomInteger = Definition("""
+      Consumes an integer 'n', pushes an integer in the range [0,n). n must be <= Integer.MAX_VALUE.
+      """, { state: State =>
+    state.stack match {
+      case (n: Long) :: rest => state.withStack(random.nextInt(n.toInt) :: rest)
       case _ => throw new IllegalArgumentException(s"Can't apply word to stack ${state.stack}")
     }
   })
