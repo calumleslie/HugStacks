@@ -84,5 +84,13 @@ object Maths {
 
   val < = PureDefinition("""
       Consumes two numbers, pushes t if the first is lesser than the second, f otherwise
-      """, "dup2 = \"__equal\" let > \"__equal\" get | !")
+      """, """
+      [
+        [
+          "x" get "y" get =
+          "x" get "y" get >
+          | !
+        ] swap "x" with-var
+      ] swap "y" with-var
+      """)
 }
