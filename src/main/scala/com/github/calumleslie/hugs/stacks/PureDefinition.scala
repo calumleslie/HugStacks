@@ -9,7 +9,7 @@ class PureDefinition(docs: String, val definition: Seq[Particle]) extends Defini
 
   def withDocumentation(newDocs: String) = new PureDefinition(newDocs, definition)
 
-  override def documentation = docs
+  override def documentation = docs.trim()
   override def toString() = definition.mkString(" ")
 }
 

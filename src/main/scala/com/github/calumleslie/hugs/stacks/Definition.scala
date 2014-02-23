@@ -15,7 +15,7 @@ object Definition {
 
   def apply(docs: String, transform: State => State) = new Definition {
     def apply(state: State) = transform(state)
-    override def documentation = docs
+    override def documentation = docs.trim()
     override def toString() = "(native)"
   }
 }
