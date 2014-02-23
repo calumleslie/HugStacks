@@ -32,11 +32,7 @@ class State(val stack: List[Any], val callStack: List[List[Particle]], val dicti
       case Some(defn) => defn(amendedState)
       case None => throw new IllegalArgumentException(s"Word $name is not known")
     }
-    case q @ Quotation(_) => amendedState.push(q)
-    case Bool(value) => amendedState.push(value)
-    case FixNum(value) => amendedState.push(value)
-    case FloatNum(value) => amendedState.push(value)
-    case Str(value) => amendedState.push(value)
+    case other => amendedState.push(other.toPrimitive)
   }
 
   def withStack(newStack: List[Any]) = State(newStack, callStack, dictionary, vars)
