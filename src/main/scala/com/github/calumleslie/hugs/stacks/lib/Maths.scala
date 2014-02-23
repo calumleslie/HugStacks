@@ -14,7 +14,9 @@ object Maths {
     "/" -> this./,
     "floor" -> floor,
     ">" -> this.>,
-    "<" -> this.lt)
+    "<" -> this.lt,
+    "--" -> this.--,
+    "++" -> this.++)
 
   val + = Definition({ state: State =>
     state.stack match {
@@ -83,6 +85,9 @@ object Maths {
       case _ => throw new IllegalArgumentException(s"Can't apply word to stack ${state.stack}")
     }
   })
+
+  val -- = PureDefinition("1 -")
+  val ++ = PureDefinition("1 +")
 
   val lt = PureDefinition("dup2 = \"__equal\" let > \"__equal\" get | !")
 }

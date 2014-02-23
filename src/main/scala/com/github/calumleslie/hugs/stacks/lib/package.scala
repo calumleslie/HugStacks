@@ -5,6 +5,7 @@ package object lib {
     Control.dictionary ++
       Functions.dictionary ++
       Maths.dictionary ++
+      Lists.dictionary ++
       Logic.dictionary ++
       StackManip.dictionary ++
       Strings.dictionary ++

@@ -18,7 +18,7 @@ import com.github.calumleslie.hugs.stacks.lang.Quotation
 
 class Parser {
   def parse(line: String) = {
-    immutable.Seq(ParserImpl.parseAll(ParserImpl.sentence, line).get: _*)
+    immutable.Seq(ParserImpl.parseAll(ParserImpl.sentence, line.trim()).get: _*)
   }
   //ParserImpl.parseAll(ParserImpl.message, line).get
 
