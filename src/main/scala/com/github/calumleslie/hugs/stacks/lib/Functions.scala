@@ -7,17 +7,11 @@ import com.github.calumleslie.hugs.stacks.PureDefinition
 
 object Functions {
 
-  lazy val dictionary = Map("deflocal" -> deflocal, "apply-to-var" -> applyToVar, "apply" -> apply)
+  lazy val dictionary = Map("apply-to-var" -> applyToVar, "apply" -> apply)
 
-  val deflocal = Definition({ state: State =>
-    state.stack match {
-      case (name: String) :: (definition: Quotation) :: rest => state.withWord(name, PureDefinition(definition)).withStack(rest)
-      case _ => throw new IllegalArgumentException( //
-        "Expected stack to end in string quotation but cannot apply to ${state.stackStr}")
-    }
-  })
-
-  val apply = Definition({ state: State =>
+  val apply = Definition("""
+      Consumes a quotation andimmediately executes its contents.
+      """, { state: State =>
     state.stack match {
       case Quotation(particles) :: rest => state.withStack(rest).pushToCallstack(particles)
       case _ => throw new IllegalArgumentException( //
@@ -26,6 +20,8 @@ object Functions {
   })
 
   val applyToVar = PureDefinition("""
+      Consumes a quotation and a strings, applies the value to the var named by the string, and stores the transformed value into the same var.
+      """, """
       [
         [
           "__apply_var" get get

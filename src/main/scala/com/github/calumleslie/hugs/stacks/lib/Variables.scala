@@ -10,14 +10,14 @@ object Variables {
 
   lazy val dictionary = Map("let" -> let, "get" -> get, "del" -> del, "with-var" -> withVar)
 
-  val let = Definition({ state: State =>
+  val let = Definition("Consumes a value and a string, stores the value in the var named by the string", { state: State =>
     state.stack match {
       case (name: String) :: value :: rest => state.withVar(name, value).withStack(rest)
       case _ => throw new IllegalArgumentException(s"Cannot apply to stack ${state.stackStr}")
     }
   })
 
-  val get = Definition({ state: State =>
+  val get = Definition("Consumes a string, pushes the value in the var named by the string", { state: State =>
     state.stack match {
       case (name: String) :: rest => state.vars.get(name) match {
         case None => throw new IllegalArgumentException(s"No var called $name available (available vars: ${state.vars.keys})")
@@ -27,7 +27,7 @@ object Variables {
     }
   })
 
-  val del = Definition({ state: State =>
+  val del = Definition("Consumes a string, deletes the var named by the string", { state: State =>
     state.stack match {
       case (name: String) :: rest => state.withStack(rest).withoutVar(name)
       case _ => throw new IllegalArgumentException(s"Cannot apply to stack ${state.stackStr}")
@@ -35,7 +35,10 @@ object Variables {
   })
 
   // TODO: This is a tremendous hack.
-  val withVar = Definition({ state: State =>
+  val withVar = Definition("""
+      Consumes a quotation, a value, and a string. Sets the var named by the string to the value, applies the quotation,
+      and restores the stack to the state it was before
+      """, { state: State =>
     state.stack match {
       case (name: String) :: value :: (scoped: Quotation) :: rest => {
 
